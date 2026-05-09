@@ -4,256 +4,296 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Болезни растений — AgroScan Pro</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&display=swap" rel="stylesheet">
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 <style>
 :root {
-  --green-dark:#1f4d2b;
-  --green-mid:#2e6b3a;
-  --green-light:#dff3e3;
-  --green-pale:#eef8f0;
-  --green-bright:#4caf50;
+  --green-dark:#1f4d2b; --green-mid:#2e6b3a;
+  --green-light:#dff3e3; --green-pale:#eef8f0; --green-bright:#4caf50;
 }
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Montserrat',sans-serif; background:#f9f6f0; color:#1e293b; }
 
-body{
-  margin:0;
-  font-family:'Montserrat',sans-serif;
-  background:#f9f6f0;
+/* NAV */
+.topnav {
+  background:#1f4d2b; padding:14px 24px;
+  display:flex; align-items:center; justify-content:space-between;
+  position:sticky; top:0; z-index:100; box-shadow:0 2px 12px rgba(0,0,0,0.3);
 }
+.topnav .logo { color:white; font-weight:800; font-size:1.3rem; text-decoration:none; display:flex; align-items:center; gap:8px; }
+.topnav .nav-links { display:flex; gap:20px; }
+.topnav .nav-links a { color:#c8e6c9; text-decoration:none; font-weight:600; font-size:0.95rem; }
+.topnav .nav-links a:hover, .topnav .nav-links a.active { color:white; }
 
-h1{
-  text-align:center;
-  color:var(--green-dark);
+/* HERO */
+.page-hero { background:linear-gradient(135deg,#1f4d2b,#2e7d32);
+  color:white; padding:40px 24px; text-align:center; }
+.page-hero h1 { font-size:2.2rem; margin-bottom:10px; }
+.page-hero p { opacity:.85; font-size:1.05rem; max-width:600px; margin:0 auto 20px; }
+
+/* QUICK DIAGNOSE BUTTON */
+.hero-btn {
+  display:inline-flex; align-items:center; gap:8px;
+  background:#fff; color:#1f4d2b; padding:12px 28px;
+  border-radius:40px; font-weight:700; font-size:1rem;
+  text-decoration:none; cursor:pointer; border:none;
+  box-shadow:0 4px 16px rgba(0,0,0,0.2); transition:all .25s;
 }
+.hero-btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.25); }
 
-.subtitle{
-  text-align:center;
-  max-width:700px;
-  margin:auto;
-  color:#2d4a2d;
-}
+/* LAYOUT */
+.disease-layout { display:flex; gap:20px; padding:24px; max-width:1300px; margin:0 auto; }
+.disease-sidebar { width:220px; background:white; padding:16px; border-radius:14px;
+  height:fit-content; position:sticky; top:74px; box-shadow:0 4px 16px rgba(0,0,0,0.06); }
+.disease-sidebar h4 { font-size:0.8rem; text-transform:uppercase; color:#888; margin-bottom:10px; letter-spacing:.5px; }
+.disease-sidebar a { display:block; padding:9px 10px; text-decoration:none; color:var(--green-mid);
+  border-radius:8px; font-size:0.92rem; transition:.2s; }
+.disease-sidebar a:hover { background:var(--green-light); color:var(--green-dark); }
 
-.disease-layout{
-  display:flex;
-  gap:20px;
-  padding:20px;
-}
+.disease-grid { flex:1; display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:22px; }
 
-.disease-sidebar{
-  width:220px;
-  background:white;
-  padding:15px;
-  border-radius:12px;
-  height:fit-content;
-  position:sticky;
-  top:20px;
-}
+.disease-card { background:white; border-radius:16px; overflow:hidden;
+  box-shadow:0 4px 16px rgba(0,0,0,0.07); transition:.25s; }
+.disease-card:hover { transform:translateY(-4px); box-shadow:0 8px 28px rgba(0,0,0,0.12); }
 
-.disease-sidebar a{
-  display:block;
-  padding:8px;
-  text-decoration:none;
-  color:var(--green-mid);
-}
+.card-img { height:170px; background:#e8f5e9; display:flex; align-items:center;
+  justify-content:center; font-size:4rem; }
 
-.disease-grid{
-  flex:1;
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:20px;
-}
+/* ИСПРАВЛЕНИЕ: реальные изображения, если есть, иначе emoji */
+.card-img img { width:100%; height:100%; object-fit:cover; }
+.card-img.no-img { background:linear-gradient(135deg,#e8f5e9,#c8e6c9); }
 
-.disease-card{
-  background:white;
-  border-radius:14px;
-  overflow:hidden;
-  box-shadow:0 4px 15px rgba(0,0,0,0.08);
-}
+.card-body { padding:16px 18px 20px; }
+.card-body h3 { color:var(--green-dark); margin-bottom:6px; font-size:1.1rem; }
+.card-body .desc { color:#555; font-size:0.9rem; margin-bottom:12px; }
+.badge { display:inline-block; padding:3px 10px; border-radius:20px;
+  font-size:0.75rem; font-weight:700; margin-bottom:10px; }
+.badge.medium { background:#fff3e0; color:#e65100; }
+.badge.high   { background:#ffebee; color:#c62828; }
+.badge.critical { background:#880000; color:white; }
+.badge.low    { background:#f9fbe7; color:#558b2f; }
 
-.disease-card img{
-  width:100%;
-  height:180px;
-  object-fit:cover;
-}
+.actions { background:var(--green-pale); padding:12px 14px; border-radius:12px; margin-top:4px; }
+.actions strong { font-size:0.85rem; display:block; margin-bottom:6px; color:var(--green-dark); }
+.actions ul { padding-left:18px; margin:0; }
+.actions li { font-size:0.87rem; margin-bottom:4px; color:#333; line-height:1.5; }
 
-.card-body{
-  padding:15px;
-}
-
-h3{
-  color:var(--green-dark);
-}
-
-.actions{
-  background:var(--green-pale);
-  padding:10px;
-  border-radius:10px;
-  margin-top:10px;
+@media(max-width:768px) {
+  .disease-layout { flex-direction:column; }
+  .disease-sidebar { width:100%; position:static; }
 }
 </style>
 </head>
-
 <body>
 
-<h1>🌱 Болезни растений</h1>
-<p class="subtitle">Полный справочник с симптомами и лечением</p>
+<!-- NAV -->
+<nav class="topnav">
+  <a class="logo" href="/"><i class="fas fa-leaf"></i> AgroScan Pro</a>
+  <div class="nav-links">
+    <a href="/">Главная</a>
+    <a href="/" onclick="setTimeout(()=>document.querySelector('.btn')?.click(),300)">🔬 Диагностика</a>
+    <a href="/detect" class="active">📚 Болезни</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="page-hero">
+  <h1>🌱 Справочник болезней растений</h1>
+  <p>Симптомы, лечение и профилактика распространённых заболеваний</p>
+  <a class="hero-btn" href="/">
+    <i class="fas fa-camera"></i> Диагностировать моё растение
+  </a>
+</div>
 
 <div class="disease-layout">
 
-<!-- SIDEBAR -->
-<div class="disease-sidebar">
-<a href="#m1">Мучнистая роса</a>
-<a href="#m2">Бактериальные пятна</a>
-<a href="#m3">Ржавчина</a>
-<a href="#m4">Фитофтороз</a>
-<a href="#m5">Серая гниль</a>
-<a href="#m6">Антракноз</a>
-<a href="#m7">Чёрная ножка</a>
-<a href="#m8">Кладоспориоз</a>
-<a href="#m9">Мозаика</a>
+  <!-- SIDEBAR -->
+  <div class="disease-sidebar">
+    <h4>Навигация</h4>
+    <a href="#m1">🌫 Мучнистая роса</a>
+    <a href="#m2">🔵 Бактериальные пятна</a>
+    <a href="#m3">🟠 Ржавчина</a>
+    <a href="#m4">🟤 Фитофтороз</a>
+    <a href="#m5">⚫ Серая гниль</a>
+    <a href="#m6">🔲 Антракноз</a>
+    <a href="#m7">⬛ Чёрная ножка</a>
+    <a href="#m8">🟡 Кладоспориоз</a>
+    <a href="#m9">🎭 Мозаика</a>
+  </div>
+
+  <!-- GRID -->
+  <div class="disease-grid">
+
+    <!-- 1 Мучнистая роса -->
+    <div id="m1" class="disease-card">
+     <img src="{{ url_for('static', filename='images/Мучнистая_роса.jpg') }}">
+      <div class="card-body">
+        <span class="badge medium">Средняя тяжесть</span>
+        <h3>Мучнистая роса</h3>
+        <p class="desc">Белый мучнистый налёт на листьях и стеблях. Вызывается грибком при высокой влажности и плохой вентиляции.</p>
+        <div class="actions">
+          <strong>💊 Лечение:</strong>
+          <ul>
+            <li>Обработать фунгицидом Топаз или Тиовит</li>
+            <li>Удалить и уничтожить поражённые листья</li>
+            <li>Раствор пищевой соды (1 ч.л./л воды)</li>
+            <li>Улучшить вентиляцию, снизить влажность</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2 Бактериальные пятна -->
+    <div id="m2" class="disease-card">
+      <img src="{{ url_for('static', filename='images/Бактериальные_пятна.jpg') }}">
+      <div class="card-body">
+        <span class="badge high">Высокая тяжесть</span>
+        <h3>Бактериальные пятна</h3>
+        <p class="desc">Водянистые тёмные пятна с жёлтым ободком. Распространяются при высокой влажности и дожде.</p>
+        <div class="actions">
+          <strong>💊 Лечение:</strong>
+          <ul>
+            <li>Медьсодержащие препараты (ХОМ, бордоская жидкость)</li>
+            <li>Удалить поражённые листья и сжечь</li>
+            <li>Сократить полив, не поливать сверху</li>
+            <li>Дезинфицировать инструменты</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3 Ржавчина -->
+    <div id="m3" class="disease-card">
+    <img src="{{ url_for('static', filename='images/ржавчина.jpg') }}">
+      <div class="card-body">
+        <span class="badge medium">Средняя тяжесть</span>
+        <h3>Ржавчина</h3>
+        <p class="desc">Оранжево-бурые пустулы на нижней стороне листьев. Грибковое заболевание, передаётся спорами.</p>
+        <div class="actions">
+          <strong>💊 Лечение:</strong>
+          <ul>
+            <li>Сжечь поражённые листья</li>
+            <li>Фунгицид Строби, Байлетон</li>
+            <li>Избегать намокания листьев</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 4 Фитофтороз -->
+    <div id="m4" class="disease-card">
+       <img src="{{ url_for('static', filename='images/Фитофтороз.jpg') }}">
+      <div class="card-body">
+        <span class="badge high">Высокая тяжесть</span>
+        <h3>Фитофтороз</h3>
+        <p class="desc">Бурые водянистые пятна, гниль плодов и корней. Активен в сырую прохладную погоду.</p>
+        <div class="actions">
+          <strong>💊 Лечение:</strong>
+          <ul>
+            <li>Ридомил Голд или Превикур</li>
+            <li>Удалить поражённые части</li>
+            <li>Обеспечить дренаж и снизить полив</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 5 Серая гниль -->
+    <div id="m5" class="disease-card">
+     <img src="{{ url_for('static', filename='images/Серая_гниль.jpg') }}">
+      <div class="card-body">
+        <span class="badge high">Высокая тяжесть</span>
+        <h3>Серая гниль</h3>
+        <p class="desc">Серый пушистый налёт на листьях и плодах. Развивается при переувлажнении и плохой циркуляции воздуха.</p>
+        <div class="actions">
+          <strong>💊 Лечение:</strong>
+          <ul>
+            <li>Снизить влажность воздуха</li>
+            <li>Фунгицид Свитч или Ровраль</li>
+            <li>Удалить поражённые части</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 6 Антракноз -->
+    <div id="m6" class="disease-card">
+      <img src="{{ url_for('static', filename='images/Антракноз.jpg') }}">
+      <div class="card-body">
+        <span class="badge medium">Средняя тяжесть</span>
+        <h3>Антракноз</h3>
+        <p class="desc">Тёмные вдавленные пятна с розоватым спороношением. Поражает листья, стебли и плоды.</p>
+        <div class="actions">
+          <strong>💊 Лечение:</strong>
+          <ul>
+            <li>Медьсодержащие препараты</li>
+            <li>Фунгицид Скор или Квадрис</li>
+            <li>Соблюдать севооборот</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7 Чёрная ножка -->
+    <div id="m7" class="disease-card">
+       <img src="{{ url_for('static', filename='images/Чёрная_ножка.jpg') }}">
+      <div class="card-body">
+        <span class="badge high">Высокая тяжесть</span>
+        <h3>Чёрная ножка</h3>
+        <p class="desc">Почернение и размягчение основания стебля у рассады. Вызывается грибками при избытке влаги.</p>
+        <div class="actions">
+          <strong>💊 Лечение:</strong>
+          <ul>
+            <li>Фунгицид Превикур Энерджи</li>
+            <li>Удалить поражённую рассаду</li>
+            <li>Снизить полив, улучшить дренаж</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 8 Кладоспориоз -->
+    <div id="m8" class="disease-card">
+       <img src="{{ url_for('static', filename='images/Кладоспориоз.jpg') }}">
+      <div class="card-body">
+        <span class="badge medium">Средняя тяжесть</span>
+        <h3>Кладоспориоз</h3>
+        <p class="desc">Жёлтые пятна сверху и бурый налёт снизу листьев. Распространён у томатов и огурцов в теплицах.</p>
+        <div class="actions">
+          <strong>💊 Лечение:</strong>
+          <ul>
+            <li>Препарат ХОМ или бордоская смесь</li>
+            <li>Регулярное проветривание теплицы</li>
+            <li>Удалить нижние поражённые листья</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- 9 Мозаика -->
+    <div id="m9" class="disease-card">
+      <img src="{{ url_for('static', filename='images/Мозаика.jpg') }}">
+      <div class="card-body">
+        <span class="badge critical">Критическая</span>
+        <h3>Вирусная мозаика</h3>
+        <p class="desc">Пёстрая окраска, деформация и морщинистость листьев. Вирус передаётся тлёй и при черенковании.</p>
+        <div class="actions">
+          <strong>💊 Лечение:</strong>
+          <ul>
+            <li>Лечения нет — удалить и уничтожить растение</li>
+            <li>Уничтожить тлю инсектицидом (Актара)</li>
+            <li>Дезинфицировать инструменты спиртом</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+  </div>
 </div>
 
-<!-- GRID -->
-<div class="disease-grid">
-
-<!-- 1 -->
-<div id="m1" class="disease-card">
-<img src="./images/муч роса.jpg">
-<div class="card-body">
-<h3>Мучнистая роса</h3>
-<p>Белый налёт на листьях</p>
-<div class="actions">
-<ul>
-<li>Удалить поражённые части</li>
-<li>Фунгицид (Топаз)</li>
-</ul>
-</div>
-</div>
-</div>
-
-<!-- 2 -->
-<div id="m2" class="disease-card">
-<img src="бак пятна.webp">
-<div class="card-body">
-<h3>Бактериальные пятна</h3>
-<p>Водянистые тёмные пятна</p>
-<div class="actions">
-<ul>
-<li>Удалить листья</li>
-<li>Медьсодержащие препараты</li>
-</ul>
-</div>
-</div>
-</div>
-
-<!-- 3 -->
-<div id="m3" class="disease-card">
-<img src="ржавчина.jpg">
-<div class="card-body">
-<h3>Ржавчина</h3>
-<p>Оранжевые пустулы</p>
-<div class="actions">
-<ul>
-<li>Сжечь листья</li>
-<li>Фунгицид</li>
-</ul>
-</div>
-</div>
-</div>
-
-<!-- 4 -->
-<div id="m4" class="disease-card">
-<img src="фитофтороз.jpg">
-<div class="card-body">
-<h3>Фитофтороз</h3>
-<p>Бурые пятна и гниль</p>
-<div class="actions">
-<ul>
-<li>Ридомил Голд</li>
-<li>Удаление поражённых частей</li>
-</ul>
-</div>
-</div>
-</div>
-
-<!-- 5 -->
-<div id="m5" class="disease-card">
-<img src="серая гниль.jpg">
-<div class="card-body">
-<h3>Серая гниль</h3>
-<p>Серый пушистый налёт</p>
-<div class="actions">
-<ul>
-<li>Снижение влажности</li>
-<li>Фунгицид</li>
-</ul>
-</div>
-</div>
-</div>
-
-<!-- 6 -->
-<div id="m6" class="disease-card">
-<img src="антракноз.jpg">
-<div class="card-body">
-<h3>Антракноз</h3>
-<p>Тёмные вдавленные пятна</p>
-<div class="actions">
-<ul>
-<li>Медьсодержащие препараты</li>
-<li>Севооборот</li>
-</ul>
-</div>
-</div>
-</div>
-
-<!-- 7 -->
-<div id="m7" class="disease-card">
-<img src="images/ножка.jpg">
-<div class="card-body">
-<h3>Чёрная ножка</h3>
-<p>Потемнение стебля у корня</p>
-<div class="actions">
-<ul>
-<li>Фунгицид Превикур</li>
-<li>Удаление рассады</li>
-</ul>
-</div>
-</div>
-</div>
-
-<!-- 8 -->
-<div id="m8" class="disease-card">
-<img src="кладоспориоз.jpg">
-<div class="card-body">
-<h3>Кладоспориоз</h3>
-<p>Жёлто-коричневые пятна</p>
-<div class="actions">
-<ul>
-<li>ХОМ</li>
-<li>Проветривание</li>
-</ul>
-</div>
-</div>
-</div>
-
-<!-- 9 -->
-<div id="m9" class="disease-card">
-<img src="мозаика.jpg">
-<div class="card-body">
-<h3>Мозаика</h3>
-<p>Пёстрая окраска листьев</p>
-<div class="actions">
-<ul>
-<li>Удалить растение</li>
-<li>Борьба с тлёй</li>
-</ul>
-</div>
-</div>
-</div>
-
-</div>
-</div>
+<footer style="background:#1f4d2b;color:#c8e6c9;text-align:center;padding:20px;margin-top:30px;font-size:0.9rem">
+  © 2026 AgroScan Pro · <a href="/" style="color:#a5d6a7">Вернуться на главную</a>
+</footer>
 
 </body>
 </html>

@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
   <title>AgroScan Pro | Зелёный доктор</title>
-  <!-- Font Awesome 6 для иконок -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
     * {
@@ -33,6 +32,12 @@
     body {
       font-family: system-ui, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
       background-color: #f9fafb;
+      background-image: url("https://i.pinimg.com/736x/1c/f2/75/1cf275dbd0241dce5f7d8126511dc3b8.jpg");
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      height: 50vh;
+      margin: 0;
       color: var(--text-dark);
       line-height: 1.6;
     }
@@ -43,7 +48,7 @@
       padding: 0 24px;
     }
 
-    /* header / навигация */
+    /* header */
     .header {
       background: var(--white);
       padding: 1rem 0;
@@ -102,15 +107,11 @@
       text-decoration: none;
       color: var(--text-soft);
       transition: var(--transition);
-      position: relative;
       font-size: 1rem;
+      cursor: pointer;
     }
 
-    .nav-links a:hover {
-      color: var(--primary);
-    }
-
-    .nav-links a.active {
+    .nav-links a:hover, .nav-links a.active {
       color: var(--primary);
       font-weight: 600;
     }
@@ -129,27 +130,13 @@
       align-items: center;
       gap: 8px;
       box-shadow: 0 8px 18px rgba(46,125,50,0.2);
-      white-space: nowrap;
     }
 
     .btn:hover {
       background: #256b28;
       transform: translateY(-2px);
-      box-shadow: 0 14px 22px rgba(46,125,50,0.3);
     }
 
-    .btn-outline {
-      background: transparent;
-      border: 2px solid var(--primary);
-      color: var(--primary);
-      box-shadow: none;
-    }
-
-    .btn-outline:hover {
-      background: #e8f5e9;
-    }
-
-    /* hero */
     .hero {
       padding: 48px 0 40px;
       background: linear-gradient(135deg, #f1f8e9 0%, #ffffff 100%);
@@ -186,11 +173,6 @@
       margin-bottom: 1.2rem;
     }
 
-    .hero h1 i {
-      color: #2e7d32;
-      margin-right: 6px;
-    }
-
     .hero p {
       font-size: 1.15rem;
       color: #334155;
@@ -200,13 +182,11 @@
 
     .hero-image {
       flex: 1 1 350px;
-      background: #d0e6d2;
+      background: radial-gradient(circle at 30% 10%, #c8e6c9, #a5d6a7);
       border-radius: 40px;
       padding: 20px 20px 0;
       display: flex;
       justify-content: center;
-      align-items: flex-end;
-      background: radial-gradient(circle at 30% 10%, #c8e6c9, #a5d6a7);
       box-shadow: var(--shadow-lg);
     }
 
@@ -216,7 +196,6 @@
       opacity: 0.9;
     }
 
-    /* секция "как работает" / инструкция */
     .section-title {
       text-align: center;
       margin: 60px 0 30px;
@@ -226,11 +205,6 @@
       font-size: 2.2rem;
       font-weight: 700;
       color: #0a2e0f;
-    }
-
-    .section-title p {
-      color: #475569;
-      margin-top: 8px;
     }
 
     .steps-grid {
@@ -266,17 +240,6 @@
       margin: 0 auto 18px;
     }
 
-    .step-card h3 {
-      font-weight: 700;
-      margin-bottom: 10px;
-    }
-
-    .step-card p {
-      color: #475569;
-      font-size: 0.95rem;
-    }
-
-    /* блок болезни */
     .diseases-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
@@ -344,63 +307,190 @@
       font-size: 0.8rem;
     }
 
-    /* футер */
+    /* Модальное окно диагностики */
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.8);
+      z-index: 1000;
+      overflow-y: auto;
+    }
+
+    .modal.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      max-width: 800px;
+      width: 90%;
+      border-radius: 28px;
+      padding: 30px;
+      max-height: 90vh;
+      overflow-y: auto;
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 25px;
+      font-size: 28px;
+      cursor: pointer;
+      color: #666;
+    }
+
+    .upload-area {
+      border: 3px dashed #ccc;
+      border-radius: 20px;
+      padding: 40px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin: 20px 0;
+    }
+
+    .upload-area:hover, .upload-area.drag-over {
+      border-color: var(--primary);
+      background: #e8f5e9;
+    }
+
+    #preview {
+      max-width: 100%;
+      max-height: 300px;
+      border-radius: 15px;
+      margin: 15px 0;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .symptoms-selector {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 10px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin: 15px 0;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 15px;
+    }
+
+    .symptom-check {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .symptom-check:hover {
+      background: #e8f5e9;
+    }
+
+    .result-card {
+      background: #f9f9f9;
+      border-radius: 20px;
+      padding: 20px;
+      margin-top: 20px;
+      border-left: 5px solid var(--primary);
+    }
+
+    .severity {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: bold;
+    }
+    .severity.low { background: #ffd700; color: #333; }
+    .severity.medium { background: #ff9800; color: white; }
+    .severity.high { background: #f44336; color: white; }
+    .severity.critical { background: #8b0000; color: white; }
+    .severity.none { background: #4caf50; color: white; }
+
+    .spinner {
+      border: 3px solid #f3f3f3;
+      border-top: 3px solid var(--primary);
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      animation: spin 1s linear infinite;
+      margin: 20px auto;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .health-score {
+      text-align: center;
+      margin: 20px 0;
+    }
+    .score-circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      background: conic-gradient(#4caf50 0deg, #ddd 0deg);
+    }
+    .score-inner {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      background: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8em;
+      font-weight: bold;
+    }
+
     .footer {
       background: #0a2e0f;
       color: #d1e7d1;
       padding: 48px 0 32px;
       margin-top: 30px;
     }
-
     .footer-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 32px;
       margin-bottom: 36px;
     }
-
     .footer-col h4 {
       color: white;
       font-weight: 600;
       margin-bottom: 16px;
-      font-size: 1.1rem;
     }
-
     .footer-col a {
       display: block;
       color: #bcd8b9;
       text-decoration: none;
       margin-bottom: 10px;
-      transition: 0.2s;
     }
-
-    .footer-col a:hover {
-      color: white;
-      text-decoration: underline;
-    }
-
+    .footer-col a:hover { color: white; }
     .footer-bottom {
       border-top: 1px solid #1e4620;
       padding-top: 24px;
       display: flex;
       justify-content: space-between;
       flex-wrap: wrap;
-      gap: 16px;
-      font-size: 0.9rem;
     }
 
     @media (max-width: 640px) {
-      .header .container {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      .nav-links {
-        flex-wrap: wrap;
-        gap: 16px;
-      }
-      .hero-image {
-        display: none;
-      }
+      .header .container { flex-direction: column; align-items: flex-start; }
+      .nav-links { flex-wrap: wrap; gap: 16px; }
+      .hero-image { display: none; }
     }
   </style>
 </head>
@@ -412,29 +502,23 @@
         <span>ITU-2-24</span>
       </div>
       <div class="nav-links">
-        <a href="#" class="active">Главная</a>
-        <a href="#">О нас</a>
-        <a href="#">Болезни</a>
-        <a href="#">Контакты</a>
-        <button class="btn"><i class="fas fa-camera"></i> Диагностика</button>
+        <a class="active" onclick="showMain()">Главная</a>
+        <a onclick="openModal()">🔬 Диагностика</a>
+        <a href="/detect">📚 Болезни</a>
       </div>
     </div>
   </header>
 
-  <main>
-    <!-- Hero -->
+  <main id="main-content">
     <section class="hero">
       <div class="container">
         <div class="hero-text">
-          <div class="hero-badge"><i class="fas fa-robot"></i></div>
+          <div class="hero-badge"><i class="fas fa-robot"></i>OpenCV</div>
           <h1><i class="fas fa-stethoscope"></i> Зелёный доктор</h1>
-          <p>Автоматизированная система анализа здоровья растений. Мы создаём умную систему, которая помогает определять болезни растений по изображениям. Она подсказывает, как ухаживать за растением, и постоянно обучается, чтобы становиться точнее.</p>
-          <button class="btn" style="padding: 14px 32px; font-size: 1rem;">
-            <i class="fas fa-search"></i> Диагностировать проблему
+          <p>Автоматизированная система анализа здоровья растений. Определяет болезни по фотографии с помощью компьютерного зрения и даёт рекомендации по лечению.</p>
+          <button class="btn" onclick="openModal()" style="padding: 14px 32px; font-size: 1rem;">
+            <i class="fas fa-camera"></i> Диагностировать растение
           </button>
-          <p style="margin-top: 12px; font-size: 0.9rem; color: #475569;">
-            <i class="far fa-clock"></i> Предварительный просмотр · Анализ за считанные минуты
-          </p>
         </div>
         <div class="hero-image">
           <i class="fas fa-seedling"></i>
@@ -442,120 +526,281 @@
       </div>
     </section>
 
-    <!-- Инструкция -->
     <div class="container">
       <div class="section-title">
         <h2>Как это работает</h2>
         <p>4 простых шага к здоровому растению</p>
       </div>
       <div class="steps-grid">
-        <div class="step-card">
-          <div class="step-icon"><i class="fas fa-mobile-alt"></i></div>
-          <h3>1. Откройте приложение</h3>
-          <p>Загрузите анализ и выберите инструмент диагностики</p>
-        </div>
-        <div class="step-card">
-          <div class="step-icon"><i class="fas fa-images"></i></div>
-          <h3>2. Выберите изображение</h3>
-          <p>Загрузите чёткие фотографии листьев с разных ракурсов</p>
-        </div>
-        <div class="step-card">
-          <div class="step-icon"><i class="fas fa-brain"></i></div>
-          <h3>3. Мгновенный анализ</h3>
-          <p>Искусственный интеллект анализирует симптомы в реальном времени</p>
-        </div>
-        <div class="step-card">
-          <div class="step-icon"><i class="fas fa-clipboard-check"></i></div>
-          <h3>4. Результат и уход</h3>
-          <p>Получите рекомендации по лечению в зависимости от культуры</p>
-        </div>
+        <div class="step-card"><div class="step-icon"><i class="fas fa-mobile-alt"></i></div><h3>1. Загрузите фото</h3><p>Сделайте чёткий снимок листьев растения</p></div>
+        <div class="step-card"><div class="step-icon"><i class="fas fa-brain"></i></div><h3>2. AI анализ</h3><p>OpenCV анализирует цвет, текстуру и пятна</p></div>
+        <div class="step-card"><div class="step-icon"><i class="fas fa-chart-line"></i></div><h3>3. Оценка здоровья</h3><p>Система определяет болезнь и степень поражения</p></div>
+        <div class="step-card"><div class="step-icon"><i class="fas fa-clipboard-list"></i></div><h3>4. Лечение</h3><p>Получите detailed рекомендации по уходу</p></div>
       </div>
-    </div>
 
-    <!-- Болезни -->
-    <div class="container">
       <div class="section-title">
         <h2>Распространённые болезни</h2>
-        <p>Определяем нарушения роста из-за грибков, бактерий и вирусов</p>
-        <form action="/upload" method="POST" enctype="multipart/form-data">
-          <input type="file" name="image">
-          <button type="submit">Отправить</button>
-        </form>
+        <p>Определяем грибковые, бактериальные и вирусные заболевания</p>
       </div>
-      <div class="diseases-grid">
-        <!-- Мучнистая роса -->
-        <div class="disease-card">
-          <div class="disease-img"><i class="fas fa-snowflake"></i></div>
-          <div class="disease-content">
-            <h3>Мучнистая роса</h3>
-            <div class="symptoms"><i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Признаки: белый «порошок» на листьях</div>
-            <ul class="treatment">
-              <li><i class="fas fa-check-circle"></i> Удалить поражённые листья</li>
-              <li><i class="fas fa-check-circle"></i> Обработать фунгицидом</li>
-              <li><i class="fas fa-check-circle"></i> Уменьшить влажность, проветривание</li>
-            </ul>
-          </div>
-        </div>
-        <!-- Бактериальные пятна -->
-        <div class="disease-card">
-          <div class="disease-img"><i class="fas fa-droplet"></i></div>
-          <div class="disease-content">
-            <h3>Бактериальные пятна</h3>
-            <div class="symptoms"><i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Признаки: водянистые или чёрные пятна</div>
-            <ul class="treatment">
-              <li><i class="fas fa-check-circle"></i> Удалить больные листья</li>
-              <li><i class="fas fa-check-circle"></i> Сократить полив</li>
-              <li><i class="fas fa-check-circle"></i> Антибактериальные препараты</li>
-            </ul>
-          </div>
-        </div>
-        <!-- Ржавчина -->
-        <div class="disease-card">
-          <div class="disease-img"><i class="fas fa-fire"></i></div>
-          <div class="disease-content">
-            <h3>Ржавчина</h3>
-            <div class="symptoms"><i class="fas fa-exclamation-triangle" style="color:#e67e22;"></i> Признаки: оранжевые/коричневые пятна</div>
-            <ul class="treatment">
-              <li><i class="fas fa-check-circle"></i> Удалить заражённые листья</li>
-              <li><i class="fas fa-check-circle"></i> Обработать фунгицидом</li>
-              <li><i class="fas fa-check-circle"></i> Не опрыскивать листья слишком часто</li>
-            </ul>
-          </div>
-        </div>
+      <div class="diseases-grid" id="diseases-list">
+        <div class="disease-card"><div class="disease-img"><i class="fas fa-snowflake"></i></div><div class="disease-content"><h3>Мучнистая роса</h3><div class="symptoms">Белый налёт, скручивание листьев</div><ul class="treatment"><li><i class="fas fa-check-circle"></i> Фунгицид (Топаз)</li><li><i class="fas fa-check-circle"></i> Удалить поражённые листья</li></ul></div></div>
+        <div class="disease-card"><div class="disease-img"><i class="fas fa-droplet"></i></div><div class="disease-content"><h3>Бактериальные пятна</h3><div class="symptoms">Водянистые/чёрные пятна</div><ul class="treatment"><li><i class="fas fa-check-circle"></i> Медьсодержащие препараты</li><li><i class="fas fa-check-circle"></i> Сократить полив</li></ul></div></div>
+        <div class="disease-card"><div class="disease-img"><i class="fas fa-fire"></i></div><div class="disease-content"><h3>Ржавчина</h3><div class="symptoms">Оранжево-коричневые пятна</div><ul class="treatment"><li><i class="fas fa-check-circle"></i> Фунгицид</li><li><i class="fas fa-check-circle"></i> Сжечь поражённые листья</li></ul></div></div>
       </div>
     </div>
   </main>
 
+  <!-- Модальное окно диагностики -->
+  <div id="diagnosticModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">&times;</span>
+      <h2><i class="fas fa-camera"></i> Диагностика растения</h2>
+
+      <div class="upload-area" id="uploadArea">
+        <i class="fas fa-cloud-upload-alt" style="font-size: 48px; color: #2e7d32;"></i>
+        <p>Нажмите или перетащите фотографию</p>
+        <small>Поддерживаются: JPG, PNG, JPEG, WEBP</small>
+        <input type="file" id="fileInput" accept="image/*" style="display: none;">
+      </div>
+
+      <div id="imagePreview"></div>
+
+      <h3>Дополнительные симптомы (необязательно)</h3>
+      <div class="symptoms-selector" id="symptomsList">
+        <div class="spinner"></div>
+      </div>
+
+      <label>🌿 Название растения:</label>
+      <input type="text" id="plantName" placeholder="Например: Роза, Томат, Монстера..." style="width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 10px;">
+
+      <button class="btn" onclick="analyzeImage()" style="width: 100%; justify-content: center;"><i class="fas fa-microscope"></i> Анализировать</button>
+
+      <div id="diagnosticResult"></div>
+    </div>
+  </div>
+
   <footer class="footer">
     <div class="container">
       <div class="footer-grid">
-        <div class="footer-col">
-          <h4>AgroScan Pro</h4>
-          <p style="color:#bcd8b9;">Зелёный доктор — умная диагностика растений.</p>
-        </div>
-        <div class="footer-col">
-          <h4>Навигация</h4>
-          <a href="#">Главная</a>
-          <a href="#">О нас</a>
-          <a href="#">Болезни растений</a>
-        </div>
-        <div class="footer-col">
-          <h4>Поддержка</h4>
-          <a href="#">Контакты</a>
-          <a href="#">Инструкция</a>
-        </div>
-        <div class="footer-col">
-          <h4>Правовая информация</h4>
-          <a href="#">Политика конфиденциальности</a>
-          <a href="#">Условия использования</a>
-          <a href="/detect">Перейти к распознаванию</a>
-        </div>
+        <div class="footer-col"><h4>AgroScan Pro</h4><p style="color:#bcd8b9;">Зелёный доктор — умная диагностика растений.</p></div>
+        <div class="footer-col"><h4>Навигация</h4><a onclick="showMain()">Главная</a><a onclick="openModal()">Диагностика</a><a href="/detect">Болезни растений</a></div>
+        <div class="footer-col"><h4>Правовая информация</h4><a href="#">Политика конфиденциальности</a><a href="/detect">Справочник болезней</a></div>
       </div>
-      <div class="footer-bottom">
-        <span>© 2026 AgroScan Pro · Все права защищены</span>
-        <span>Спасибо, что остаётесь с нами! 🌱</span>
-      </div>
+      <div class="footer-bottom"><span>© 2026 AgroScan Pro · Все права защищены</span><span>🌱 Здоровые растения — здоровый мир</span></div>
     </div>
   </footer>
+
+  <script>
+    let currentImageBase64 = null;
+    let selectedSymptoms = new Set();
+    let symptomsData = [];
+
+    // Загрузка симптомов с сервера
+    fetch('/api/symptoms')
+        .then(r => r.json())
+        .then(data => {
+            symptomsData = data.symptoms;
+            const container = document.getElementById('symptomsList');
+            if (container && symptomsData.length) {
+                container.innerHTML = '';
+                symptomsData.forEach(s => {
+                    const div = document.createElement('div');
+                    div.className = 'symptom-check';
+                    div.innerHTML = `
+                        <input type="checkbox" id="sym_${s.id}" value="${s.id}">
+                        <label for="sym_${s.id}">${s.icon || '🌿'} ${s.label}</label>
+                    `;
+                    const cb = div.querySelector('input');
+                    cb.addEventListener('change', (e) => {
+                        if (e.target.checked) selectedSymptoms.add(s.id);
+                        else selectedSymptoms.delete(s.id);
+                    });
+                    container.appendChild(div);
+                });
+            }
+        })
+        .catch(e => console.error('Ошибка загрузки симптомов:', e));
+
+    // Drag & Drop
+    const uploadArea = document.getElementById('uploadArea');
+    const fileInput = document.getElementById('fileInput');
+    if (uploadArea) {
+        uploadArea.onclick = () => fileInput.click();
+        uploadArea.ondragover = (e) => { e.preventDefault(); uploadArea.classList.add('drag-over'); };
+        uploadArea.ondragleave = () => uploadArea.classList.remove('drag-over');
+        uploadArea.ondrop = (e) => {
+            e.preventDefault();
+            uploadArea.classList.remove('drag-over');
+            if (e.dataTransfer.files[0]) handleImage(e.dataTransfer.files[0]);
+        };
+    }
+    if (fileInput) fileInput.onchange = (e) => { if (e.target.files[0]) handleImage(e.target.files[0]); };
+
+    function handleImage(file) {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            currentImageBase64 = e.target.result;
+            document.getElementById('imagePreview').innerHTML = `
+                <img id="preview" src="${currentImageBase64}" alt="Preview">
+                <p style="color: green; text-align: center;">✓ Файл загружен: ${file.name}</p>
+            `;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function openModal() {
+        document.getElementById('diagnosticModal').classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+    function closeModal() {
+        document.getElementById('diagnosticModal').classList.remove('active');
+        document.body.style.overflow = 'auto';
+    }
+    function showMain() { window.scrollTo({top: 0, behavior: 'smooth'}); }
+
+    async function analyzeImage() {
+        if (!currentImageBase64) {
+            alert('Пожалуйста, загрузите фотографию растения');
+            return;
+        }
+        const resultDiv = document.getElementById('diagnosticResult');
+        resultDiv.innerHTML = '<div class="spinner"></div><p style="text-align:center">Анализ изображения через OpenCV...</p>';
+
+        const symptoms = Array.from(selectedSymptoms);
+        const plantName = document.getElementById('plantName').value || 'Неизвестное растение';
+
+        try {
+            const response = await fetch('/api/analyze-image', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image_base64: currentImageBase64, symptoms: symptoms, plant_name: plantName })
+            });
+            const data = await response.json();
+            if (data.error) throw new Error(data.error);
+            displayResults(data);
+        } catch (err) {
+            resultDiv.innerHTML = `<div class="result-card" style="border-left-color:#f44336"><h3>❌ Ошибка</h3><p>${err.message}</p></div>`;
+        }
+    }
+
+    const SEVERITY_LABELS = { low:'Низкая', medium:'Средняя', high:'Высокая', critical:'Критическая', none:'Здоров' };
+    const SEVERITY_ICONS  = { low:'🟡', medium:'🟠', high:'🔴', critical:'☠️', none:'✅' };
+
+    function displayResults(data) {
+        const resultDiv = document.getElementById('diagnosticResult');
+        let html = '<div class="result-card">';
+
+        // ── Заголовок с именем растения ──
+        const plantName = data.plant_name || 'Растение';
+        html += `<h2 style="margin-bottom:16px">🌿 ${plantName}</h2>`;
+
+        // ── Индикатор здоровья ──
+        if (data.image_health_score !== undefined && data.image_health_score !== null) {
+            const score = data.image_health_score;
+            const color = score >= 70 ? '#4caf50' : (score >= 40 ? '#ff9800' : '#f44336');
+            const label = score >= 70 ? 'Хорошее' : (score >= 40 ? 'Умеренное' : 'Плохое');
+            html += `
+                <div class="health-score">
+                    <h3>📊 Здоровье растения: <span style="color:${color}">${label}</span></h3>
+                    <div class="score-circle" style="background: conic-gradient(${color} 0deg ${score * 3.6}deg, #ddd ${score * 3.6}deg 360deg)">
+                        <div class="score-inner" style="color:${color}">${score}%</div>
+                    </div>
+                </div>`;
+        }
+
+        // ── Симптомы, найденные OpenCV ──
+        const ocvSyms = data.opencv_analysis?.detected_symptoms || [];
+        if (ocvSyms.length > 0) {
+            html += `<div style="background:#fff8e1;border-radius:12px;padding:12px 16px;margin:12px 0;">
+                <strong>🔍 OpenCV обнаружил признаки:</strong>
+                <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:8px;">
+                ${ocvSyms.map(s => `<span style="background:#ffe082;padding:4px 10px;border-radius:20px;font-size:0.85rem;">${s.replace(/_/g,' ')}</span>`).join('')}
+                </div></div>`;
+        }
+
+        // ── Диагнозы ──
+        if (data.diagnoses && data.diagnoses.length > 0) {
+            data.diagnoses.forEach((diag, idx) => {
+                const sc   = { low:'low', medium:'medium', high:'high', critical:'critical', none:'none' }[diag.severity] || 'medium';
+                const icon = SEVERITY_ICONS[diag.severity] || '🟠';
+                const lbl  = SEVERITY_LABELS[diag.severity] || diag.severity;
+                const isPrimary = idx === 0;
+
+                html += `
+                <div style="margin:14px 0;padding:18px;background:white;border-radius:14px;
+                            box-shadow:0 2px 10px rgba(0,0,0,0.07);
+                            ${isPrimary ? 'border-left:5px solid #2e7d32' : 'border-left:3px solid #aaa'}">
+                    ${isPrimary ? '<div style="font-size:0.75rem;font-weight:700;color:#2e7d32;margin-bottom:6px;text-transform:uppercase">▶ Основной диагноз</div>' : ''}
+                    <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:10px">
+                        <h3 style="margin:0">${icon} ${diag.name}</h3>
+                        <div style="display:flex;gap:8px;align-items:center">
+                            <span class="severity ${sc}">${lbl}</span>
+                            <span style="background:#e8f5e9;color:#2e7d32;padding:4px 10px;border-radius:20px;font-weight:700;font-size:0.85rem">
+                                Уверенность: ${diag.confidence}%
+                            </span>
+                        </div>
+                    </div>
+                    <p style="color:#555;margin-bottom:12px">${diag.description}</p>
+
+                    ${diag.matching_symptoms && diag.matching_symptoms.length ? `
+                    <div style="margin-bottom:10px">
+                        <strong>🔗 Совпавшие симптомы:</strong>
+                        <div style="margin-top:6px;display:flex;flex-wrap:wrap;gap:6px">
+                        ${diag.matching_symptoms.map(s =>
+                            `<span style="background:#e8f5e9;padding:3px 10px;border-radius:20px;font-size:0.82rem">${s.replace(/_/g,' ')}</span>`
+                        ).join('')}
+                        </div>
+                    </div>` : ''}
+
+                    <div style="background:#e8f5e9;padding:14px;border-radius:12px;margin:10px 0">
+                        <strong>💊 Рекомендации по лечению:</strong>
+                        <ul style="margin:8px 0 0 18px;line-height:1.8">
+                            ${diag.recommendations.map(r => `<li>${r}</li>`).join('')}
+                        </ul>
+                    </div>
+
+                    ${diag.prevention && diag.prevention.length ? `
+                    <div style="background:#e3f2fd;padding:14px;border-radius:12px">
+                        <strong>🛡️ Профилактика:</strong>
+                        <ul style="margin:8px 0 0 18px;line-height:1.8">
+                            ${diag.prevention.map(p => `<li>${p}</li>`).join('')}
+                        </ul>
+                    </div>` : ''}
+                </div>`;
+            });
+        } else {
+            html += `<div style="text-align:center;padding:20px;background:#e8f5e9;border-radius:14px;margin-top:12px">
+                <div style="font-size:3rem">✅</div>
+                <h3 style="color:#2e7d32">Растение здорово!</h3>
+                <p>Видимых признаков заболеваний не обнаружено.<br>Продолжайте соблюдать режим полива и подкормок.</p>
+            </div>`;
+        }
+
+        // ── Тепловая карта OpenCV ──
+        if (data.opencv_analysis?.debug_images?.heatmap) {
+            html += `<details style="margin-top:16px">
+                <summary style="cursor:pointer;font-weight:600;padding:8px 0">🔬 Визуализация OpenCV (тепловая карта поражений)</summary>
+                <img src="${data.opencv_analysis.debug_images.heatmap}"
+                     style="width:100%;border-radius:12px;margin-top:10px;max-height:300px;object-fit:contain">
+            </details>`;
+        }
+        if (data.opencv_analysis?.debug_images?.healthy_regions) {
+            html += `<details style="margin-top:8px">
+                <summary style="cursor:pointer;font-weight:600;padding:8px 0">🌿 Здоровые зоны</summary>
+                <img src="${data.opencv_analysis.debug_images.healthy_regions}"
+                     style="width:100%;border-radius:12px;margin-top:10px;max-height:300px;object-fit:contain">
+            </details>`;
+        }
+
+        html += '</div>';
+        resultDiv.innerHTML = html;
+        resultDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    // Закрытие модалки по клику вне контента
+    document.getElementById('diagnosticModal').addEventListener('click', (e) => {
+        if (e.target === document.getElementById('diagnosticModal')) closeModal();
+    });
+  </script>
 </body>
 </html>
